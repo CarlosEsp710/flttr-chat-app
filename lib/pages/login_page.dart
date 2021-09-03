@@ -77,10 +77,7 @@ class __FormState extends State<_Form> {
           ),
           BlueButton(
             text: 'Iniciar Sesión',
-            onPressed: () {
-              print(emailCtrl.text);
-              print(passwordCtrl.text);
-            },
+            onPressed: () => Navigator.pushReplacementNamed(context, 'users'),
           ),
         ],
       ),
