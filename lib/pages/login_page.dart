@@ -1,18 +1,88 @@
+// ignore_for_file: sized_box_for_whitespace
+
 import 'package:flutter/material.dart';
 
-class LoginPage extends StatefulWidget {
+import 'package:chat/widgets/logo.dart';
+import 'package:chat/widgets/custom_input.dart';
+import 'package:chat/widgets/btn_blue.dart';
+import 'package:chat/widgets/labels.dart';
+
+class LoginPage extends StatelessWidget {
   const LoginPage({Key? key}) : super(key: key);
 
   @override
-  _LoginPageState createState() => _LoginPageState();
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color(0XFFF2F2F2),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          child: Container(
+            height: MediaQuery.of(context).size.height * 0.9,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: const <Widget>[
+                Logo(title: 'Messenger'),
+                _Form(),
+                Labels(
+                  route: 'register',
+                  title: '¿No tienes una cuenta?',
+                  subtitle: 'Regístrate!',
+                ),
+                Text(
+                  'Términos y condiciones de uso',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w200,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _Form extends StatefulWidget {
+  const _Form({Key? key}) : super(key: key);
+
+  @override
+  __FormState createState() => __FormState();
+}
+
+class __FormState extends State<_Form> {
+  final emailCtrl = TextEditingController();
+  final passwordCtrl = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: Text('Login Page'),
+    return Container(
+      margin: const EdgeInsets.only(top: 40),
+      padding: const EdgeInsets.symmetric(horizontal: 50),
+      child: Column(
+        children: <Widget>[
+          CustomInput(
+            icon: Icons.mail_outline,
+            placeholder: 'Correo electrónico',
+            keyboardType: TextInputType.emailAddress,
+            isPassword: false,
+            textController: emailCtrl,
+          ),
+          CustomInput(
+            icon: Icons.security_outlined,
+            placeholder: 'Contraseña',
+            keyboardType: TextInputType.text,
+            isPassword: true,
+            textController: passwordCtrl,
+          ),
+          BlueButton(
+            text: 'Iniciar Sesión',
+            onPressed: () {
+              print(emailCtrl.text);
+              print(passwordCtrl.text);
+            },
+          ),
+        ],
       ),
     );
   }
