@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-
+import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+
+import 'package:chat/services/auth_service.dart';
 
 import 'package:chat/models/user.dart';
 
@@ -17,19 +19,19 @@ class _UsersPageState extends State<UsersPage> {
       online: true,
       email: 'user_test1@examle.com',
       name: 'User Test 1',
-      uiid: '1',
+      uid: '1',
     ),
     User(
       online: false,
       email: 'user_test2@examle.com',
       name: 'User Test 2',
-      uiid: '2',
+      uid: '2',
     ),
     User(
       online: true,
       email: 'user_test3@examle.com',
       name: 'User Test 3',
-      uiid: '3',
+      uid: '3',
     ),
   ];
 
@@ -38,18 +40,24 @@ class _UsersPageState extends State<UsersPage> {
 
   @override
   Widget build(BuildContext context) {
+    final authService = Provider.of<AuthService>(context, listen: false);
+    final user = authService.user;
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text(
-          'Mi nombre',
-          style: TextStyle(color: Colors.black87),
+        title: Text(
+          user.name,
+          style: const TextStyle(color: Colors.black87),
         ),
         elevation: 1,
         backgroundColor: Colors.white,
         leading: IconButton(
           icon: Icon(Icons.exit_to_app, color: Colors.blue[400]),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pushReplacementNamed(context, 'login');
+            AuthService.deleteToken();
+          },
         ),
         actions: [
           Container(

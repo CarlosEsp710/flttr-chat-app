@@ -1,6 +1,11 @@
 // ignore_for_file: sized_box_for_whitespace
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import 'package:chat/helpers/show_alert.dart';
+
+import 'package:chat/services/auth_service.dart';
 
 import 'package:chat/widgets/logo.dart';
 import 'package:chat/widgets/custom_input.dart';
@@ -57,6 +62,8 @@ class __FormState extends State<_Form> {
   final passwordCtrl = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    final authService = Provider.of<AuthService>(context);
+
     return Container(
       margin: const EdgeInsets.only(top: 40),
       padding: const EdgeInsets.symmetric(horizontal: 50),
@@ -85,11 +92,21 @@ class __FormState extends State<_Form> {
           ),
           BlueButton(
             text: 'Registrarme',
-            onPressed: () {
-              print(nameCtrl.text);
-              print(emailCtrl.text);
-              print(passwordCtrl.text);
-            },
+            onPressed: authService.authenticating
+                ? () => {}
+                : () async {
+                    FocusScope.of(context).unfocus();
+                    final registerStatus = await authService.register(
+                        nameCtrl.text.trim(),
+                        emailCtrl.text.trim(),
+                        passwordCtrl.text.trim());
+
+                    if (registerStatus == true) {
+                      Navigator.pushReplacementNamed(context, 'users');
+                    } else {
+                      showAlert(context, 'Registro incorrecto', registerStatus);
+                    }
+                  },
           ),
         ],
       ),
