@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-import 'package:chat/global/enviroments.dart';
-import 'package:chat/models/user.dart';
 import 'package:chat/models/login_response.dart';
+import 'package:chat/models/user.dart';
+import 'package:chat/global/enviroments.dart';
 
 class AuthService with ChangeNotifier {
   late User user;
@@ -23,7 +23,7 @@ class AuthService with ChangeNotifier {
   // Token (Getteres)
   static Future<String> getToken() async {
     const _storage = FlutterSecureStorage();
-    final token = _storage.read(key: 'token');
+    final token = await _storage.read(key: 'token');
     return token.toString();
   }
 
